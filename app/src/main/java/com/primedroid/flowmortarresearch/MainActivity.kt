@@ -1,11 +1,9 @@
 package com.primedroid.flowmortarresearch
 
 import android.app.Activity
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
 import mortar.MortarScope
-
 import mortar.MortarScope.buildChild
 import mortar.MortarScope.findChild
 import mortar.bundler.BundleServiceRunner
