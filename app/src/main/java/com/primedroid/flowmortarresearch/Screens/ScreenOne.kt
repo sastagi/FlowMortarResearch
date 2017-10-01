@@ -1,27 +1,29 @@
-package com.primedroid.flowmortarresearch.Screen
+package com.primedroid.flowmortarresearch.Screens
 
 import android.content.Context
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.primedroid.flowmortarresearch.R
 import com.primedroid.flowmortarresearch.core.Screen
+import com.primedroid.flowmortarresearch.core.inflate
 import mortar.ViewPresenter
 
 class ScreenOne: Screen {
-
-    override fun createView(context: Context) = ScreenOneView(context)
-
+    override fun createPresenter() = ScreenOnePresenter()
+    override fun createView(context: Context, layout_id: Int) = ScreenOneView(context, layout_id)
 }
 
 class ScreenOnePresenter : ViewPresenter<ScreenOneView>() {
-    private var serial = -1
+    private var serial = -2
 
     override fun onLoad(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null && serial == -1)
+        if (savedInstanceState != null && serial == -2)
             serial = savedInstanceState.getInt("serial")
-        view.show("Main")
+        view.show("ScreenOne")
     }
 
     override fun onSave(outState: Bundle?) {
@@ -29,13 +31,18 @@ class ScreenOnePresenter : ViewPresenter<ScreenOneView>() {
     }
 }
 
-class ScreenOneView : LinearLayout {
+class ScreenOneView(
+        context: Context,
+        layout_id: Int
+) : LinearLayout(context) {
     private var presenter: ScreenOnePresenter? = context.getSystemService(ScreenOnePresenter::class.java.name) as? ScreenOnePresenter
-    private lateinit var textView: TextView
+    private var textView = findViewById<TextView>(R.id.text)
 
-    constructor(context: Context) : super(context)
-
-    constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet)
+    init {
+        @Suppress("LeakingThis") // How is this a leak?
+        context.inflate(layout_id, this)
+        onFinishInflate()
+    }
 
     override fun onFinishInflate() {
         super.onFinishInflate()
